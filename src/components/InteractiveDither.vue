@@ -92,7 +92,7 @@ function renderFrame(timestamp: number) {
   const width = offscreenCanvas.width
   const height = offscreenCanvas.height
   const imageData = offscreenCtx.createImageData(width, height)
-  const data = imageData.data
+  const data = imageData.data as any
   const time = timestamp * 0.00045
 
   pointer.x += (pointer.tx - pointer.x) * 0.12
@@ -119,11 +119,11 @@ function renderFrame(timestamp: number) {
       const noise = wave * 0.22 + swirl * 0.18
       const base = pointerInfluence + noise
       const normalized = Math.max(0, Math.min(1, base * 0.9 + 0.14))
-      const threshold = (bayerMatrix[y % 8][x % 8] + 0.5) / 64
+      const threshold = (bayerMatrix![y % 8]![x % 8]! + 0.5) / 64
 
       const accent = normalized > threshold + 0.05
       const baseColor = [0, 0, 0]
-      const accentColor = [194, 254, 12]
+      const accentColor = [255, 255, 255]
 
       const r = accent ? accentColor[0] : baseColor[0]
       const g = accent ? accentColor[1] : baseColor[1]

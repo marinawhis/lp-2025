@@ -27,9 +27,9 @@ const iconComponent = {
     target="_blank"
     rel="noopener noreferrer"
   >
-    <Button variant="ghost" class="p-8 w-full hover:text-[#c2fe0c]">
+    <Button variant="ghost" class="p-8 w-full hover:text-black">
       <div class="flex items-center w-full gap-4">
-        <component :is="iconComponent" class="text-[#c2fe0c]"/>
+        <component :is="iconComponent"/>
         <div class="flex flex-col items-start w-full">
           <span class="text-base font-mono">{{ title }}</span>
         </div>
