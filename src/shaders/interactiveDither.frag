@@ -9,16 +9,17 @@ uniform vec2 u_resolution;
 uniform float u_active;
 uniform float u_pulse;
 
+const float SCALE_FACTOR = 3.2;
+
 void main() {
-    float x = gl_FragCoord.x / 3.2;
-    float y = gl_FragCoord.y / 3.2;
+    float x = gl_FragCoord.x / SCALE_FACTOR;
+    float y = gl_FragCoord.y / SCALE_FACTOR;
 
     int index = int(mod(float(y), 8.0)) * 8 + int(mod(float(x), 8.0));
 
-    float nx = float(x) / u_resolution.x * 3.2;
-    float ny = float(y) / u_resolution.y * 3.2;
+    float nx = float(x) / u_resolution.x * SCALE_FACTOR;
+    float ny = float(y) / u_resolution.y * SCALE_FACTOR;
 
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
     float wave = sin((nx * 8.5 + u_time) * 1.4) + cos((ny * 8.2 - u_time) * 1.3);
     float swirl = sin((nx * 1.5 + ny * 1.5 + u_time * 0.3) * 6.0);
 
@@ -33,7 +34,8 @@ void main() {
 
     float bayerValue = 0.0;
 
-    if (index == 1) bayerValue = 48.0;
+    if (index == 0) bayerValue = 0.0;
+    else if (index == 1) bayerValue = 48.0;
     else if (index == 2) bayerValue = 12.0;
     else if (index == 3) bayerValue = 60.0;
     else if (index == 4) bayerValue = 3.0;

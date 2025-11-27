@@ -3,8 +3,6 @@ import { onMounted, onBeforeUnmount, ref } from 'vue'
 import ShaderCanvas from '@/components/ShaderCanvas.vue'
 import fragSrc from '@/shaders/interactiveDither.frag?raw'
 
-const containerRef = ref<HTMLDivElement | null>(null)
-
 const pointer = {
   active: false,
   pulse: 0,
@@ -30,11 +28,11 @@ function handleLeave() {
   pointer.active = false
 }
 
-function loop(now: number) {
-  pointer.pulse *= 0.88;
+function loop() {
+  pointer.pulse *= 0.88
   
-  uniforms.u_active = pointer.active ? 1 : 0;
-  uniforms.u_pulse = pointer.pulse;
+  uniforms.u_active = pointer.active ? 1 : 0
+  uniforms.u_pulse = pointer.pulse
 
   rafId = requestAnimationFrame(loop)
 }
@@ -50,7 +48,6 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-      ref="containerRef"
       class="relative h-[320px] md:h-full w-full overflow-hidden bg-black"
       @pointermove="updatePointer"
       @pointerdown="handlePointerDown"

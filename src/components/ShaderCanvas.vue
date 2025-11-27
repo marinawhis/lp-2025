@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
-import glslCanvas from "glslCanvas";
+import GlslCanvas from "glslCanvas";
 
 const props = defineProps<{
   width?: number;
@@ -17,7 +17,7 @@ const webGlSupported = !!document.createElement('canvas').getContext('webgl');
 const pixelDensity = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
 
 const canvasEl = ref<HTMLCanvasElement | null>(null);
-let glslInstance: glslCanvas | null = null;
+let glslInstance: GlslCanvas | null = null;
 let rafId: number | null = null;
 
 const cssBoxWidth = ref(0);
@@ -47,6 +47,7 @@ function applyUniforms() {
 
 function startLoop() {
   stopLoop();
+
   const render = () => {
     applyUniforms();
 
@@ -79,7 +80,7 @@ onMounted(() => {
     window.addEventListener('resize', measureCanvasSize);
   }
 
-  glslInstance = new glslCanvas(canvasEl.value, {
+  glslInstance = new GlslCanvas(canvasEl.value, {
     vertexString: vert.value,
     fragmentString: frag.value,
     alpha: false,
@@ -94,7 +95,9 @@ onBeforeUnmount(() => {
   stopLoop();
 
   if (ro) {
-    try { ro.disconnect(); } catch {}
+    try { ro.disconnect(); } catch {
+      // ignore errors during disconnect
+    }
     ro = null;
   } else {
     window.removeEventListener('resize', measureCanvasSize);
@@ -114,7 +117,16 @@ watch([frag, vert], ([f, v]) => {
     if (!glslInstance || !webGlSupported) return;
     if (!canvasEl.value) return;
 
-    glslInstance = new glslCanvas(canvasEl.value, {
+    if (glslInstance) {
+        try {
+            glslInstance.destroy();
+        } catch (e) {
+            // ignore errors during destroy
+        }
+        glslInstance = null;
+    }
+
+    glslInstance = new GlslCanvas(canvasEl.value, {
         vertexString: v,
         fragmentString: f,
         alpha: false,
