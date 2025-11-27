@@ -20,7 +20,7 @@ void main() {
     float nx = float(x) / u_resolution.x * SCALE_FACTOR;
     float ny = float(y) / u_resolution.y * SCALE_FACTOR;
 
-    float wave = sin((nx * 8.5 + u_time) * 1.4) + cos((ny * 8.2 - u_time) * 1.3);
+    float wave = sin((nx * 8.5 + u_time) * 1.4) + cos((ny * -8.2 - u_time) * -1.3);
     float swirl = sin((nx * 1.5 + ny * 1.5 + u_time * 0.3) * 6.0);
 
     vec2 mouseUV = u_mouse / u_resolution;
