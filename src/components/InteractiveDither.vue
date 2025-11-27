@@ -48,10 +48,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-      class="relative h-[320px] md:h-full w-full overflow-hidden bg-black"
-      @pointermove="updatePointer"
-      @pointerdown="handlePointerDown"
-      @pointerleave="handleLeave"
+    class="relative h-[320px] md:h-full w-full overflow-hidden bg-black"
+    @pointermove="updatePointer"
+    @pointerdown="handlePointerDown"
+    @pointerleave="handleLeave"
   >
     <ShaderCanvas
       :frag-shader="fragSrc"

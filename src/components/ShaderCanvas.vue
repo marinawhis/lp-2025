@@ -3,8 +3,6 @@ import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import GlslCanvas from "glslCanvas";
 
 const props = defineProps<{
-  width?: number;
-  height?: number;
   fragShader?: string;
   vertShader?: string;
   uniforms?: Record<string, unknown> | undefined;
@@ -114,25 +112,22 @@ onBeforeUnmount(() => {
 });
 
 watch([frag, vert], ([f, v]) => {
-    if (!glslInstance || !webGlSupported) return;
-    if (!canvasEl.value) return;
+  if (!glslInstance || !webGlSupported) return;
+  if (!canvasEl.value) return;
 
-    if (glslInstance) {
-        try {
-            glslInstance.destroy();
-        } catch (e) {
-            // ignore errors during destroy
-        }
-        glslInstance = null;
-    }
+  try {
+    glslInstance.destroy();
+  } catch (e) {
+    // ignore errors during destroy
+  }
 
-    glslInstance = new GlslCanvas(canvasEl.value, {
-        vertexString: v,
-        fragmentString: f,
-        alpha: false,
-        antialias: true,
-        mode: 'flat',
-    });
+  glslInstance = new GlslCanvas(canvasEl.value, {
+    vertexString: v,
+    fragmentString: f,
+    alpha: false,
+    antialias: true,
+    mode: 'flat',
+  });
 }, { immediate: false });
 
 watch(() => props.uniforms, () => {
